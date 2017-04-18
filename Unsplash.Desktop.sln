@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unsplash.Core", "Unsplash.Core\Unsplash.Core.csproj", "{389056A5-CCC1-4D2A-959D-54BD6FA408C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unsplash.Desktop", "Unsplash.Desktop\Unsplash.Desktop.csproj", "{8F7E1820-6755-49F3-AB23-65B2769DC72A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{389056A5-CCC1-4D2A-959D-54BD6FA408C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389056A5-CCC1-4D2A-959D-54BD6FA408C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389056A5-CCC1-4D2A-959D-54BD6FA408C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{389056A5-CCC1-4D2A-959D-54BD6FA408C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F7E1820-6755-49F3-AB23-65B2769DC72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7E1820-6755-49F3-AB23-65B2769DC72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7E1820-6755-49F3-AB23-65B2769DC72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7E1820-6755-49F3-AB23-65B2769DC72A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
