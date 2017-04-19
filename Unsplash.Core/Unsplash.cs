@@ -94,12 +94,13 @@ namespace Unsplash.Core
                 }
                 catch
                 {
-                }
                     // ignored
-                var td = ts.NewTask();
+                }
 
+                var td = ts.NewTask();
                 td.Principal.RunLevel = TaskRunLevel.Highest;
-                td.RegistrationInfo.Description = "Changes wallpaper using unsplash. Help us @ https://github.com/redbaty/Unsplash.Desktop";
+                td.RegistrationInfo.Description =
+                    "Changes wallpaper using unsplash. Help us @ https://github.com/redbaty/Unsplash.Desktop";
                 td.Triggers.Add(new DailyTrigger
                 {
                     StartBoundary = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
@@ -117,7 +118,7 @@ namespace Unsplash.Core
                 ImageWidth = IntMessage("> Enter the desired image width: ", Color.Gray),
                 ImageHeight = IntMessage("> Enter the desired image height: ", Color.Gray),
                 WallpaperStyle = StyleMenu(typeof(Wallpaper.Style))
-        };
+            };
             Settings = settings;
             settings.Save();
             CreateLoopTask();
