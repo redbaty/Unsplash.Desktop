@@ -8,6 +8,7 @@ namespace Unsplash.Core
     {
         public int ImageHeight { get; set; }
         public int ImageWidth { get; set; }
+        public Wallpaper.Style WallpaperStyle { get; set; }
 
         public void Save()
         {

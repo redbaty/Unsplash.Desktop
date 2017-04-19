@@ -86,9 +86,10 @@ namespace Unsplash.Core
         {
             var settings = new Settings
             {
-                ImageWidth = IntMessage("> Enter the image width: ", Color.Gray),
-                ImageHeight = IntMessage("> Enter the image height: ", Color.Gray)
-            };
+                ImageWidth = IntMessage("> Enter the desired image width: ", Color.Gray),
+                ImageHeight = IntMessage("> Enter the desired image height: ", Color.Gray),
+                WallpaperStyle = StyleMenu(typeof(Wallpaper.Style))
+        };
             Settings = settings;
             settings.Save();
             CreateLoopTask();
