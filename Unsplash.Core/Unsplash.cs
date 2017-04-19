@@ -43,17 +43,41 @@ namespace Unsplash.Core
                     $"https://source.unsplash.com/random/{Settings.ImageWidth}x{Settings.ImageHeight}",
                     "wallpaper.jpg");
                 var envr = $"{Environment.CurrentDirectory}\\wallpaper.jpg";
-                Wallpaper.Set(new Uri(envr), Wallpaper.Style.Centered);
-                Console.WriteLine($"> New wallpaper set", Color.YellowGreen);
+                Wallpaper.Set(new Uri(envr), Settings.WallpaperStyle);
+                File.Delete(envr);
+
+                Console.WriteLine($"> New wallpaper set!", Color.YellowGreen);
             }
         }
 
-        private static void AddToPath()
+        public static string GetEnumDescription(Enum value)
         {
-            var name = "PATH";
-            var value = System.Reflection.Assembly.GetEntryAssembly().Location;
-            var target = EnvironmentVariableTarget.Machine;
-            Environment.SetEnvironmentVariable(name, value, target);
+            var fi = value.GetType().GetField(value.ToString());
+            var attributes =
+                (DescriptionAttribute[]) fi.GetCustomAttributes(
+                    typeof(DescriptionAttribute),
+                    false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            return value.ToString();
+        }
+
+        private static Wallpaper.Style StyleMenu(Type enume)
+        {
+            var x = Enum.GetValues(enume).OfType<Enum>().ToList();
+            Console.WriteLine("");
+            for (var i = 0; i < x.Count; i++)
+            {
+                var member = x[i];
+                var description = GetEnumDescription(member) == member.ToString()
+                    ? ""
+                    : " // " + GetEnumDescription(member);
+                Console.WriteLine($"[{i}] {member}{description}");
+            }
+            var id = IntMessage("Pick a wallpaper display mode (eg: 0): ", Color.Gray);
+            return (Wallpaper.Style) id;
         }
 
         private static void CreateLoopTask()
