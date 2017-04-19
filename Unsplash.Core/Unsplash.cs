@@ -1,7 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using Microsoft.Win32.TaskScheduler;
 using Newtonsoft.Json;
 using Console = Colorful.Console;
@@ -92,7 +95,7 @@ namespace Unsplash.Core
                 catch
                 {
                 }
-
+                    // ignored
                 var td = ts.NewTask();
 
                 td.Principal.RunLevel = TaskRunLevel.Highest;
@@ -102,7 +105,7 @@ namespace Unsplash.Core
                     StartBoundary = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
                     Repetition = new RepetitionPattern(new TimeSpan(0, 0, 10, 0), TimeSpan.Zero)
                 });
-                td.Actions.Add(new ExecAction(System.Reflection.Assembly.GetEntryAssembly().Location, "-h"));
+                td.Actions.Add(new ExecAction(Assembly.GetEntryAssembly().Location, "-h"));
                 ts.RootFolder.RegisterTaskDefinition("Update wallpaper", td);
             }
         }
