@@ -14,8 +14,9 @@ namespace Unsplash.Core
 
         public static void Main(string[] args)
         {
-            //AddToPath();
-            Console.WriteLine($"Unsplash Desktop v1.0\n", Color.MediumSlateBlue);
+            Console.WriteAscii("Unsplash", Color.MediumSlateBlue);
+            Console.WriteLine("Version 1.1", Color.YellowGreen);
+            Console.WriteLine("Help us @ https://github.com/redbaty/Unsplash.Desktop\n", Color.Gray);
 
             if (args.Length == 0 || args[0] != "-g")
                 try
@@ -38,7 +39,7 @@ namespace Unsplash.Core
 
             using (var webclient = new WebClient())
             {
-                Console.WriteLine($"> Downloading new desktop", Color.Gray);
+                Console.WriteLine($"> Downloading wallpaper image", Color.Gray);
                 webclient.DownloadFile(
                     $"https://source.unsplash.com/random/{Settings.ImageWidth}x{Settings.ImageHeight}",
                     "wallpaper.jpg");
@@ -95,7 +96,7 @@ namespace Unsplash.Core
                 var td = ts.NewTask();
 
                 td.Principal.RunLevel = TaskRunLevel.Highest;
-                td.RegistrationInfo.Description = "Changes wallpaper using unsplash. (GITHUB_PAGE)";
+                td.RegistrationInfo.Description = "Changes wallpaper using unsplash. Help us @ https://github.com/redbaty/Unsplash.Desktop";
                 td.Triggers.Add(new DailyTrigger
                 {
                     StartBoundary = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
