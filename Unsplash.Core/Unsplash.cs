@@ -124,20 +124,22 @@ namespace Unsplash.Core
             CreateLoopTask();
         }
 
-        static int IntMessage(string message, Color color)
+        static UnsplashSource GenerateUnsplashSource()
         {
-            while (true)
+            var menu = ShowEnumMenu<UnsplashSourceType>();
+            Console.WriteLine(menu);
+            switch (menu)
             {
-                try
-                {
-                    Console.WriteLine(message, color);
-                    var stringinput = Console.ReadLine();
-                    return Convert.ToInt32(stringinput);
-                }
-                catch
-                {
-                    Console.WriteLine("> Couldn't convert the input to int (Only Numbers)", Color.Crimson);
-                }
+                case UnsplashSourceType.Random:
+                    return new RandomUnsplashSource();
+                case UnsplashSourceType.Category:
+                    return new CategoryUnsplashSource();
+                case UnsplashSourceType.Collection:
+                    return new CollectionUnsplashSource();
+                case UnsplashSourceType.SearchTerm:
+                    return new SearchtermUnsplashSource(true);
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
     }
