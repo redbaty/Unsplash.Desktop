@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,7 +8,7 @@ using Microsoft.Win32;
 
 namespace Unsplash.Core
 {
-    public sealed class Wallpaper
+    public sealed partial class Wallpaper
     {
         const int SPI_SETDESKWALLPAPER = 20;
         const int SPIF_UPDATEINIFILE = 0x01;
@@ -18,17 +17,7 @@ namespace Unsplash.Core
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern int SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni);
 
-        public enum Style
-        {
-            Fit,
-            [Description("Windows 8 or newer")] Span,
-            Stretch,
-            Tile,
-            Center,
-            Fill
-        }
-
-        public static void Set(Uri uri, Style style)
+        public static void Set(Uri uri, WallpaperDisplayStyle wallpaperDisplayStyle)
         {
             try
             {
@@ -40,32 +29,32 @@ namespace Unsplash.Core
 
                 var key = Registry.CurrentUser.OpenSubKey(@"Control Panel\Desktop", true);
 
-                if (style == Style.Fill)
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Fill)
                 {
                     key.SetValue(@"WallpaperStyle", 10.ToString());
                     key.SetValue(@"TileWallpaper", 0.ToString());
                 }
-                if (style == Style.Fit)
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Fit)
                 {
                     key.SetValue(@"WallpaperStyle", 6.ToString());
                     key.SetValue(@"TileWallpaper", 0.ToString());
                 }
-                if (style == Style.Span) // Windows 8 or newer only!
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Span) // Windows 8 or newer only!
                 {
                     key.SetValue(@"WallpaperStyle", 22.ToString());
                     key.SetValue(@"TileWallpaper", 0.ToString());
                 }
-                if (style == Style.Stretch)
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Stretch)
                 {
                     key.SetValue(@"WallpaperStyle", 2.ToString());
                     key.SetValue(@"TileWallpaper", 0.ToString());
                 }
-                if (style == Style.Tile)
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Tile)
                 {
                     key.SetValue(@"WallpaperStyle", 0.ToString());
                     key.SetValue(@"TileWallpaper", 1.ToString());
                 }
-                if (style == Style.Center)
+                if (wallpaperDisplayStyle == WallpaperDisplayStyle.Center)
                 {
                     key.SetValue(@"WallpaperStyle", 0.ToString());
                     key.SetValue(@"TileWallpaper", 0.ToString());

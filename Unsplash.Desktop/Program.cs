@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 
 namespace Unsplash.Desktop
 {
@@ -10,9 +11,7 @@ namespace Unsplash.Desktop
         [STAThread]
         static void Main(string[] args)
         {
-            //TODO: better handling of command args, (handle help (--help /?) etc.)
-            string mode = args.Length > 0 ? args[0] : ""; //default to gui
-
+            var mode = args.Length > 0 ? args[0] : "";
             if (mode == "-h")
             {
                 Core.Unsplash.Main(args);
@@ -21,7 +20,8 @@ namespace Unsplash.Desktop
             {
                 ConsoleManager.Show();
                 Core.Unsplash.Main(args);
-                Console.ReadKey();
+                ConsoleManager.Free();
+                Application.Exit();
             }
         }
     }

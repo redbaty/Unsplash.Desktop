@@ -53,9 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\Questions.cs" />
+    <Compile Include="Sources\CategoryUnsplashSource.cs" />
+    <Compile Include="Sources\CollectionUnsplashSource.cs" />
+    <Compile Include="Sources\RandomUnsplashSource.cs" />
+    <Compile Include="Sources\SearchtermUnsplashSource.cs" />
+    <Compile Include="Style.cs" />
     <Compile Include="Unsplash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UnsplashSource.cs" />
+    <Compile Include="Enums\UnsplashSourceType.cs" />
     <Compile Include="Wallpaper.cs" />
   </ItemGroup>
   <ItemGroup>

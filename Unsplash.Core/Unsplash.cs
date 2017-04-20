@@ -3,10 +3,12 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using Microsoft.Win32.TaskScheduler;
 using Newtonsoft.Json;
+using Unsplash.Core.Enums;
+using Unsplash.Core.Extensions;
+using Unsplash.Core.Sources;
 using Console = Colorful.Console;
 
 namespace Unsplash.Core
@@ -15,10 +17,13 @@ namespace Unsplash.Core
     {
         public static Settings Settings { get; set; }
 
+        public static JsonSerializerSettings JsonSettings { get; } =
+            new JsonSerializerSettings {TypeNameHandling = TypeNameHandling.All};
+
         public static void Main(string[] args)
         {
             Console.WriteAscii("Unsplash", Color.MediumSlateBlue);
-            Console.WriteLine("Version 1.1", Color.YellowGreen);
+            Console.WriteLine("Version 1.2", Color.YellowGreen);
             Console.WriteLine("Help us @ https://github.com/redbaty/Unsplash.Desktop\n", Color.Gray);
 
             if (args.Length == 0 || args[0] != "-g")
@@ -26,12 +31,14 @@ namespace Unsplash.Core
                 {
                     Settings =
                         JsonConvert.DeserializeObject<Settings>(
-                            File.ReadAllText(Environment.ExpandEnvironmentVariables("%USERPROFILE%\\Unsplash.desktop"))
+                            File.ReadAllText(Environment.ExpandEnvironmentVariables("%USERPROFILE%\\Unsplash.desktop")),
+                            JsonSettings
                         );
                 }
-                catch
+                catch (Exception ex)
                 {
                     Console.WriteLine("> Failed to load settings.", Color.Crimson);
+                    Console.WriteLine(ex.Message, Color.Crimson);
                     Console.WriteLine("> Run the program with -g to generate another one.", Color.CadetBlue);
                     return;
                 }
@@ -40,48 +47,29 @@ namespace Unsplash.Core
                 GenerateSettings();
             }
 
-            using (var webclient = new WebClient())
-            {
-                Console.WriteLine($"> Downloading wallpaper image", Color.Gray);
-                webclient.DownloadFile(
-                    $"https://source.unsplash.com/random/{Settings.ImageWidth}x{Settings.ImageHeight}",
-                    "wallpaper.jpg");
-                var envr = $"{Environment.CurrentDirectory}\\wallpaper.jpg";
-                Wallpaper.Set(new Uri(envr), Settings.WallpaperStyle);
-                File.Delete(envr);
-
-                Console.WriteLine($"> New wallpaper set!", Color.YellowGreen);
-            }
+            Console.WriteLine("> Downloading wallpaper image...", Color.Gray);
+            Wallpaper.Set(
+                new Uri(Settings.Source.BuildUrlString(Settings)),
+                Settings.WallpaperDisplayStyle);
+            Console.WriteLine("> New wallpaper set!", Color.LimeGreen);
+            Console.WriteLine("> Press any key to continue", Color.Gray);  
         }
 
-        public static string GetEnumDescription(Enum value)
+        public static T ShowEnumMenu<T>()
         {
-            var fi = value.GetType().GetField(value.ToString());
-            var attributes =
-                (DescriptionAttribute[]) fi.GetCustomAttributes(
-                    typeof(DescriptionAttribute),
-                    false);
+            var enumValues = Enum.GetValues(typeof(T)).OfType<Enum>().ToList();
+            Console.WriteLine($"Select a {typeof(T)} member");
 
-            if (attributes != null &&
-                attributes.Length > 0)
-                return attributes[0].Description;
-            return value.ToString();
-        }
-
-        private static Wallpaper.Style StyleMenu(Type enume)
-        {
-            var x = Enum.GetValues(enume).OfType<Enum>().ToList();
-            Console.WriteLine("");
-            for (var i = 0; i < x.Count; i++)
+            for (var i = 0; i < enumValues.Count; i++)
             {
-                var member = x[i];
-                var description = GetEnumDescription(member) == member.ToString()
+                var member = enumValues[i];
+                var description = member.GetEnumDescription() == member.ToString()
                     ? ""
-                    : " // " + GetEnumDescription(member);
+                    : " // " + member.GetEnumDescription();
                 Console.WriteLine($"[{i}] {member}{description}");
             }
-            var id = IntMessage("Pick a wallpaper display mode (eg: 0): ", Color.Gray);
-            return (Wallpaper.Style) id;
+            var id = Questions.AskIntMessage("Pick a enum member (eg: 0): ", Color.Gray);
+            return (T) Enum.Parse(typeof(T), id.ToString());
         }
 
         private static void CreateLoopTask()
@@ -115,9 +103,10 @@ namespace Unsplash.Core
         {
             var settings = new Settings
             {
-                ImageWidth = IntMessage("> Enter the desired image width: ", Color.Gray),
-                ImageHeight = IntMessage("> Enter the desired image height: ", Color.Gray),
-                WallpaperStyle = StyleMenu(typeof(Wallpaper.Style))
+                ImageWidth = Questions.AskIntMessage("> Enter the desired image width: ", Color.Gray),
+                ImageHeight = Questions.AskIntMessage("> Enter the desired image height: ", Color.Gray),
+                WallpaperDisplayStyle = ShowEnumMenu<WallpaperDisplayStyle>(),
+                Source = GenerateUnsplashSource()
             };
             Settings = settings;
             settings.Save();
