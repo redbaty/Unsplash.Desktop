@@ -7,8 +7,9 @@ namespace Unsplash.Core.Sources
         public string Collectionid { get; set; }
         public bool IsCurated { get; set; }
 
-        public CollectionUnsplashSource()
+        public CollectionUnsplashSource(bool b = false)
         {
+            if(b)
             Collectionid = Questions.AskQuestion("Please enter a collection ID: ");
         }
 

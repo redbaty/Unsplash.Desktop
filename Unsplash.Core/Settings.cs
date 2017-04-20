@@ -8,8 +8,10 @@ namespace Unsplash.Core
     {
         public int ImageHeight { get; set; }
         public int ImageWidth { get; set; }
+        public TimeSpan Interval { get; set; }
         public UnsplashSource Source { get; set; }
         public WallpaperDisplayStyle WallpaperDisplayStyle { get; set; }
+
 
         [JsonIgnore]
         public string Resolution => $"{ImageWidth}x{ImageHeight}";

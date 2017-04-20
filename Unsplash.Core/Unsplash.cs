@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -23,7 +22,7 @@ namespace Unsplash.Core
         public static void Main(string[] args)
         {
             Console.WriteAscii("Unsplash", Color.MediumSlateBlue);
-            Console.WriteLine("Version 1.2", Color.YellowGreen);
+            Console.WriteLine("Version 1.2.5", Color.YellowGreen);
             Console.WriteLine("Help us @ https://github.com/redbaty/Unsplash.Desktop\n", Color.Gray);
 
             if (args.Length == 0 || args[0] != "-g")
@@ -52,7 +51,7 @@ namespace Unsplash.Core
                 new Uri(Settings.Source.BuildUrlString(Settings)),
                 Settings.WallpaperDisplayStyle);
             Console.WriteLine("> New wallpaper set!", Color.LimeGreen);
-            Console.WriteLine("> Press any key to continue", Color.Gray);  
+            Console.WriteLine("> Press any key to continue", Color.Gray);
         }
 
         public static T ShowEnumMenu<T>()
@@ -92,7 +91,7 @@ namespace Unsplash.Core
                 td.Triggers.Add(new DailyTrigger
                 {
                     StartBoundary = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day),
-                    Repetition = new RepetitionPattern(new TimeSpan(0, 0, 10, 0), TimeSpan.Zero)
+                    Repetition = new RepetitionPattern(Settings.Interval, TimeSpan.Zero)
                 });
                 td.Actions.Add(new ExecAction(Assembly.GetEntryAssembly().Location, "-h"));
                 ts.RootFolder.RegisterTaskDefinition("Update wallpaper", td);
@@ -106,7 +105,9 @@ namespace Unsplash.Core
                 ImageWidth = Questions.AskIntMessage("> Enter the desired image width: ", Color.Gray),
                 ImageHeight = Questions.AskIntMessage("> Enter the desired image height: ", Color.Gray),
                 WallpaperDisplayStyle = ShowEnumMenu<WallpaperDisplayStyle>(),
-                Source = GenerateUnsplashSource()
+                Source = GenerateUnsplashSource(),
+                Interval = new TimeSpan(0, 0,
+                    Questions.AskIntMessage("How often the wallpaper should be updated (In minutes)? "), 0, 0)
             };
             Settings = settings;
             settings.Save();
@@ -122,9 +123,9 @@ namespace Unsplash.Core
                 case UnsplashSourceType.Random:
                     return new RandomUnsplashSource();
                 case UnsplashSourceType.Category:
-                    return new CategoryUnsplashSource();
+                    return new CategoryUnsplashSource(true);
                 case UnsplashSourceType.Collection:
-                    return new CollectionUnsplashSource();
+                    return new CollectionUnsplashSource(true);
                 case UnsplashSourceType.SearchTerm:
                     return new SearchtermUnsplashSource(true);
                 default:

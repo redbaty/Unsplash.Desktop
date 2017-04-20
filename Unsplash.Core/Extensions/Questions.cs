@@ -6,6 +6,8 @@ namespace Unsplash.Core.Extensions
 {
     public static class Questions
     {
+        public static int AskIntMessage(string message) => AskIntMessage(message, Color.Gray);
+
         public static int AskIntMessage(string message, Color color)
         {
             while (true)
