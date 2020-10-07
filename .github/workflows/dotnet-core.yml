@@ -22,7 +22,7 @@ jobs:
     - name: Zip Windows Build
       shell: cmd
       run: |
-        '/c/Program Files/7-Zip/7z.exe' 'a win-x64.zip build-win-x64'
+        "C:/Program Files/7-Zip/7z.exe" "a win-x64.zip build-win-x64"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
