@@ -20,8 +20,9 @@ jobs:
     - name: Build Windows X64
       run: dotnet publish --configuration Release --self-contained -r win-x64 -p:PublishSingleFile=true -o build-win-x64 ./Unsplash.Desktop/Unsplash.Desktop.csproj
     - name: Zip Windows Build
-      run: |
-        zip -r win-x64.zip build-win-x64
+      uses: montudor/action-zip@v0.1.0
+      with:
+        args: zip -qq -r win-x64.zip build-win-x64
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
