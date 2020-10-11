@@ -16,9 +16,9 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: 5.0.100-rc.1.20452.10
     - name: Build Windows X64
-      run: dotnet publish --configuration Release --self-contained -r win-x64 -p:PublishSingleFile=true -o build-win-x64 ./Unsplash.Desktop/Unsplash.Desktop.csproj
+      run: dotnet publish --configuration Release --self-contained -r win-x64 -p:PublishSingleFile=true -p:PublishTrimmed=true -o build-win-x64 ./Unsplash.Desktop/Unsplash.Desktop.csproj
     - name: Zip Windows Build
       shell: cmd
       run: '"%PROGRAMFILES%/7-Zip/7z.exe" a win-x64.zip build-win-x64'
