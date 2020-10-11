@@ -2,7 +2,7 @@
 using System.Drawing;
 using Console = Colorful.Console;
 
-namespace Unsplash.Core.Extensions
+namespace Unsplash.Desktop
 {
     public static class Questions
     {

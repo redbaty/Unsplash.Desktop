@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Unsplash.Core
+namespace Unsplash.Core.Enums
 {
     public enum WallpaperDisplayStyle
     {

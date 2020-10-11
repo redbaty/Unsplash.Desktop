@@ -1,16 +1,15 @@
-using Unsplash.Core.Extensions;
-
 namespace Unsplash.Core.Sources
 {
     public class CollectionUnsplashSource : UnsplashSource
     {
-        public string Collectionid { get; set; }
-        public bool IsCurated { get; set; }
+        private string Collectionid { get; }
+        
+        private bool IsCurated { get; }
 
-        public CollectionUnsplashSource(bool b = false)
+        public CollectionUnsplashSource(string collectionid, bool isCurated)
         {
-            if(b)
-            Collectionid = Questions.AskQuestion("Please enter a collection ID: ");
+            Collectionid = collectionid;
+            IsCurated = isCurated;
         }
 
         public override string BuildUrlString(Settings settings)

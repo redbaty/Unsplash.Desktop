@@ -4,7 +4,7 @@ namespace Unsplash.Core.Sources
     {
         public override string BuildUrlString(Settings settings)
         {
-            return $"https://source.unsplash.com/random/{settings.Resolution}";
+            return $"https://source.unsplash.com/random/{settings.GetResolution()}";
         }
     }
 }
