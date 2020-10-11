@@ -41,6 +41,7 @@ namespace Unsplash.Core
                 Logger.LogCritical("Can't find this executable location to create the task.");
                 Environment.Exit(-1);
 #endif
+                return;
             }
 
             using var ts = new TaskService();
